@@ -239,6 +239,27 @@ test('lets the teacher set and persist the background volume', async ({ page }) 
       ),
     )
     .toBe(0.14);
+  const backgroundSound = page.getByRole('checkbox', { name: 'Background sound' });
+  const masterSound = page.getByRole('checkbox', { name: 'Sound & ambience' });
+  await expect(backgroundSound).toBeChecked();
+  await backgroundSound.uncheck();
+  await expect(masterSound).toBeChecked();
+  await expect(volume).toBeDisabled();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => (window as typeof window & { volumeChanges: number[] }).volumeChanges.at(-1),
+      ),
+    )
+    .toBe(0);
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          JSON.parse(localStorage.getItem('daily-routine-preferences') ?? '{}').backgroundSound,
+      ),
+    )
+    .toBe(false);
   await expect
     .poll(() =>
       page.evaluate(

@@ -4,6 +4,7 @@ import type { Preferences } from '../types/game';
 const defaults: Preferences = {
   inputMode: 'hand',
   sound: true,
+  backgroundSound: true,
   backgroundVolume: 0.04,
   speech: true,
   cameraOpacity: 0.72,

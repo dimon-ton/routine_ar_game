@@ -50,6 +50,7 @@ export interface GameState {
 export interface Preferences {
   inputMode: InputMode;
   sound: boolean;
+  backgroundSound: boolean;
   backgroundVolume: number;
   speech: boolean;
   cameraOpacity: number;

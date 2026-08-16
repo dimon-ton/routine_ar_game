@@ -23,15 +23,23 @@ describe('usePreferences', () => {
     expect(returning.result.current[0].sound).toBe(false);
   });
 
-  it('defaults and persists the background volume independently', async () => {
+  it('defaults and persists the background controls independently', async () => {
     const hook = renderHook(() => usePreferences());
+    expect(hook.result.current[0].backgroundSound).toBe(true);
     expect(hook.result.current[0].backgroundVolume).toBe(0.04);
 
-    act(() => hook.result.current[1]((current) => ({ ...current, backgroundVolume: 0.14 })));
+    act(() =>
+      hook.result.current[1]((current) => ({
+        ...current,
+        backgroundSound: false,
+        backgroundVolume: 0.14,
+      })),
+    );
     await waitFor(() =>
-      expect(
-        JSON.parse(localStorage.getItem('daily-routine-preferences') ?? '{}').backgroundVolume,
-      ).toBe(0.14),
+      expect(JSON.parse(localStorage.getItem('daily-routine-preferences') ?? '{}')).toMatchObject({
+        backgroundSound: false,
+        backgroundVolume: 0.14,
+      }),
     );
   });
 

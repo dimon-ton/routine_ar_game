@@ -37,7 +37,7 @@ export default function App() {
   const question = questions[state.questionIndex];
   const { primeAmbience, startAmbience } = useBackgroundAmbience(
     question?.routine.ambience,
-    preferences.sound,
+    preferences.sound && preferences.backgroundSound,
     state.screen === 'playing',
     feedback !== null,
     preferences.backgroundVolume,

@@ -69,6 +69,14 @@ export function TeacherSettings({
             onChange={(event) => update('speech', event.target.checked)}
           />
         </label>
+        <label className="setting-row">
+          <span>Background sound</span>
+          <input
+            type="checkbox"
+            checked={preferences.backgroundSound}
+            onChange={(event) => update('backgroundSound', event.target.checked)}
+          />
+        </label>
         <label>
           Background volume <output>{Math.round(preferences.backgroundVolume * 100)}%</output>
           <input
@@ -78,6 +86,7 @@ export function TeacherSettings({
             max="0.2"
             step="0.01"
             value={preferences.backgroundVolume}
+            disabled={!preferences.sound || !preferences.backgroundSound}
             onInput={(event) => update('backgroundVolume', Number(event.currentTarget.value))}
           />
         </label>

@@ -13,7 +13,7 @@ import { useBackgroundAmbience } from './hooks/useBackgroundAmbience';
 import { usePreferences } from './hooks/usePreferences';
 import type { Choice } from './types/game';
 import { createRoundQuestions } from './utils/questionFactory';
-import { TOTAL_QUESTIONS } from './data/routines';
+import { ROUTINES, TOTAL_QUESTIONS } from './data/routines';
 
 const testMode = new URLSearchParams(location.search).has('test');
 
@@ -117,6 +117,14 @@ export default function App() {
     },
     [],
   );
+  useEffect(() => {
+    const images = ROUTINES.map((routine) => {
+      const image = new Image();
+      image.src = routine.illustration;
+      return image;
+    });
+    return () => images.forEach((image) => image.removeAttribute('src'));
+  }, []);
   useEffect(() => {
     const key = (event: KeyboardEvent) => {
       if (event.key.toLowerCase() === 'f') fullscreen();

@@ -60,6 +60,26 @@ test('starts without requesting a camera and completes a correct Round 1 answer'
   await expect(page.getByText('Question 2/8')).toBeVisible();
 });
 
+test('loads every vocabulary picture choice successfully', async ({ page }) => {
+  await startMouse(page);
+  for (let index = 0; index < 8; index += 1) {
+    await expect
+      .poll(() =>
+        page.locator('.choice-card img').evaluateAll(
+          (images) =>
+            images.length === 3 &&
+            images.every((image) => {
+              const picture = image as HTMLImageElement;
+              return picture.complete && picture.naturalWidth > 0;
+            }),
+        ),
+      )
+      .toBe(true);
+    await answerCorrect(page, 1);
+    if (index < 7) await expect(page.getByText(`Question ${index + 2}/8`)).toBeVisible();
+  }
+});
+
 test('requires a pinch gesture and explains it to the student', async ({ page }) => {
   await page.goto('/?test=1');
   await page.getByRole('button', { name: /Mouse \/ Touch/ }).click();

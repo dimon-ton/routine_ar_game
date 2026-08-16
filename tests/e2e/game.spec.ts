@@ -73,7 +73,9 @@ test('starts audible looping ambience when the first question begins', async ({ 
     };
   });
 
-  await startMouse(page);
+  await page.goto('/?test=1');
+  await page.getByRole('button', { name: /Mouse \/ Touch/ }).click();
+  await page.getByRole('button', { name: /Start Game/ }).click();
   await expect
     .poll(() =>
       page.evaluate(
@@ -89,7 +91,27 @@ test('starts audible looping ambience when the first question begins', async ({ 
       expect.objectContaining({
         src: expect.stringContaining('wake-up-morning-birds.mp3'),
         loop: true,
-        volume: 0.28,
+        volume: 0,
+      }),
+    );
+
+  await page.getByRole('button', { name: /Continue/ }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          (
+            window as typeof window & {
+              ambiencePlayCalls: Array<{ src: string; loop: boolean; volume: number }>;
+            }
+          ).ambiencePlayCalls,
+      ),
+    )
+    .toContainEqual(
+      expect.objectContaining({
+        src: expect.stringContaining('wake-up-morning-birds.mp3'),
+        loop: true,
+        volume: 0.16,
       }),
     );
 });

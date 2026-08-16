@@ -35,7 +35,7 @@ export default function App() {
   const { tone, speak } = useFeedback(preferences.sound, preferences.speech);
   const questions = useMemo(() => createRoundQuestions(state.round), [state.round]);
   const question = questions[state.questionIndex];
-  const startAmbience = useBackgroundAmbience(
+  const { primeAmbience, startAmbience } = useBackgroundAmbience(
     question?.routine.ambience,
     preferences.sound,
     state.screen === 'playing',
@@ -46,6 +46,7 @@ export default function App() {
     else void document.documentElement.requestFullscreen?.();
   }, []);
   const start = () => {
+    primeAmbience();
     setFeedback(null);
     dispatch({ type: 'START', calibration: preferences.inputMode === 'hand', now: Date.now() });
   };

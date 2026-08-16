@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-const AMBIENCE_VOLUME = 0.28;
+const AMBIENCE_VOLUME = 0.16;
 
 export function useBackgroundAmbience(
   source: string | undefined,
@@ -10,9 +10,11 @@ export function useBackgroundAmbience(
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const sourceRef = useRef(source);
   const enabledRef = useRef(enabled);
+  const activeRef = useRef(active);
 
   sourceRef.current = source;
   enabledRef.current = enabled;
+  activeRef.current = active;
 
   useEffect(() => {
     const audio = new Audio();
@@ -74,15 +76,38 @@ export function useBackgroundAmbience(
     };
   }, [active, enabled, source]);
 
-  return useCallback(() => {
+  const prepareAudio = useCallback(() => {
     const audio = audioRef.current;
     const currentSource = sourceRef.current;
-    if (!audio || !currentSource || !enabledRef.current) return;
+    if (!audio || !currentSource || !enabledRef.current) return null;
     if (audio.getAttribute('src') !== currentSource) {
       audio.src = currentSource;
       audio.load();
     }
+    return audio;
+  }, []);
+
+  const primeAmbience = useCallback(() => {
+    const audio = prepareAudio();
+    if (!audio) return;
+    audio.volume = 0;
+    void audio
+      .play()
+      .then(() => {
+        if (!activeRef.current) {
+          audio.pause();
+          audio.currentTime = 0;
+        }
+      })
+      .catch(() => undefined);
+  }, [prepareAudio]);
+
+  const startAmbience = useCallback(() => {
+    const audio = prepareAudio();
+    if (!audio) return;
     audio.volume = AMBIENCE_VOLUME;
     void audio.play().catch(() => undefined);
-  }, []);
+  }, [prepareAudio]);
+
+  return { primeAmbience, startAmbience };
 }

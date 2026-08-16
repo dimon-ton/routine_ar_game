@@ -78,7 +78,7 @@ export function TeacherSettings({
             max="0.2"
             step="0.01"
             value={preferences.backgroundVolume}
-            onChange={(event) => update('backgroundVolume', Number(event.target.value))}
+            onInput={(event) => update('backgroundVolume', Number(event.currentTarget.value))}
           />
         </label>
         <label>

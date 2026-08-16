@@ -212,12 +212,33 @@ test('shows gentle retry feedback after an incorrect answer', async ({ page }) =
 });
 
 test('lets the teacher set and persist the background volume', async ({ page }) => {
+  await page.addInitScript(() => {
+    const descriptor = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'volume');
+    if (!descriptor?.get || !descriptor.set) return;
+    const testedWindow = window as typeof window & { volumeChanges: number[] };
+    testedWindow.volumeChanges = [];
+    Object.defineProperty(HTMLMediaElement.prototype, 'volume', {
+      configurable: true,
+      get: descriptor.get,
+      set(value: number) {
+        testedWindow.volumeChanges.push(value);
+        descriptor.set?.call(this, value);
+      },
+    });
+  });
   await startMouse(page);
   await page.getByRole('button', { name: 'Open teacher settings' }).click();
   const volume = page.getByRole('slider', { name: /Background volume/ });
   await expect(volume).toHaveValue('0.04');
   await volume.fill('0.14');
   await expect(page.getByText('14%', { exact: true })).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => (window as typeof window & { volumeChanges: number[] }).volumeChanges.at(-1),
+      ),
+    )
+    .toBe(0.14);
   await expect
     .poll(() =>
       page.evaluate(

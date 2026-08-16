@@ -44,11 +44,6 @@ export function useBackgroundAmbience(
       return;
     }
 
-    let frame = 0;
-    const fadeStartedAt = performance.now();
-    const startingVolume = audio.volume;
-    const targetVolume = ducked ? volume * 0.3 : volume;
-
     const removeUnlockListeners = () => {
       document.removeEventListener('pointerdown', tryPlay);
       document.removeEventListener('touchstart', tryPlay);
@@ -60,23 +55,21 @@ export function useBackgroundAmbience(
         .then(removeUnlockListeners)
         .catch(() => undefined);
     };
-    const fadeVolume = (now: number) => {
-      const progress = Math.min(1, (now - fadeStartedAt) / 250);
-      audio.volume = startingVolume + (targetVolume - startingVolume) * progress;
-      if (progress < 1) frame = requestAnimationFrame(fadeVolume);
-    };
-
     document.addEventListener('pointerdown', tryPlay);
     document.addEventListener('touchstart', tryPlay);
     document.addEventListener('keydown', tryPlay);
     tryPlay();
-    frame = requestAnimationFrame(fadeVolume);
 
     return () => {
       removeUnlockListeners();
-      cancelAnimationFrame(frame);
     };
-  }, [active, ducked, enabled, source, volume]);
+  }, [active, enabled, source]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = enabled && active ? (ducked ? volume * 0.3 : volume) : 0;
+  }, [active, ducked, enabled, volume]);
 
   const prepareAudio = useCallback(() => {
     const audio = audioRef.current;

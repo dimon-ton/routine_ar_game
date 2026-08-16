@@ -89,7 +89,7 @@ test('starts audible looping ambience when the first question begins', async ({ 
     )
     .toContainEqual(
       expect.objectContaining({
-        src: expect.stringContaining('wake-up-morning-birds.mp3'),
+        src: expect.stringContaining('children-focus-background.mp3'),
         loop: true,
         volume: 0,
       }),
@@ -109,9 +109,77 @@ test('starts audible looping ambience when the first question begins', async ({ 
     )
     .toContainEqual(
       expect.objectContaining({
-        src: expect.stringContaining('wake-up-morning-birds.mp3'),
+        src: expect.stringContaining('children-focus-background.mp3'),
         loop: true,
-        volume: 0.16,
+        volume: 0.08,
+      }),
+    );
+});
+
+test('focuses correct and wrong answer feedback over the background', async ({ page }) => {
+  await page.addInitScript(() => {
+    const originalPlay = HTMLMediaElement.prototype.play;
+    const testedWindow = window as typeof window & {
+      feedbackPlayCalls: Array<{ src: string; volume: number }>;
+    };
+    testedWindow.feedbackPlayCalls = [];
+    HTMLMediaElement.prototype.play = function () {
+      testedWindow.feedbackPlayCalls.push({
+        src: this.currentSrc || this.src,
+        volume: this.volume,
+      });
+      return originalPlay.call(this);
+    };
+  });
+
+  await startMouse(page);
+  const heading = await currentHeading(page);
+  const correct = answers[heading];
+  const cards = page.locator('.choice-card');
+  for (let index = 0; index < (await cards.count()); index += 1) {
+    const card = cards.nth(index);
+    if (!(await card.getAttribute('aria-label'))?.includes(correct)) {
+      await card.click();
+      break;
+    }
+  }
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          (
+            window as typeof window & {
+              feedbackPlayCalls: Array<{ src: string; volume: number }>;
+            }
+          ).feedbackPlayCalls,
+      ),
+    )
+    .toContainEqual(
+      expect.objectContaining({
+        src: expect.stringContaining('wrong-gentle-low-tone.mp3'),
+        volume: 0.62,
+      }),
+    );
+
+  await expect(page.getByText(/Try again!/)).not.toBeVisible();
+  await page
+    .getByRole('button', { name: new RegExp(correct.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) })
+    .click();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          (
+            window as typeof window & {
+              feedbackPlayCalls: Array<{ src: string; volume: number }>;
+            }
+          ).feedbackPlayCalls,
+      ),
+    )
+    .toContainEqual(
+      expect.objectContaining({
+        src: expect.stringContaining('correct-magic-marimba.mp3'),
+        volume: 0.72,
       }),
     );
 });

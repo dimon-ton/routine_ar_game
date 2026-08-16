@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-const AMBIENCE_VOLUME = 0.16;
+const AMBIENCE_VOLUME = 0.08;
+const DUCKED_VOLUME = 0.025;
 
 export function useBackgroundAmbience(
   source: string | undefined,
   enabled: boolean,
   active: boolean,
+  ducked: boolean,
 ) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const sourceRef = useRef(source);
@@ -46,6 +48,8 @@ export function useBackgroundAmbience(
 
     let frame = 0;
     const fadeStartedAt = performance.now();
+    const startingVolume = audio.volume;
+    const targetVolume = ducked ? DUCKED_VOLUME : AMBIENCE_VOLUME;
 
     const removeUnlockListeners = () => {
       document.removeEventListener('pointerdown', tryPlay);
@@ -58,23 +62,23 @@ export function useBackgroundAmbience(
         .then(removeUnlockListeners)
         .catch(() => undefined);
     };
-    const fadeIn = (now: number) => {
-      audio.volume = AMBIENCE_VOLUME * Math.min(1, (now - fadeStartedAt) / 600);
-      if (audio.volume < AMBIENCE_VOLUME) frame = requestAnimationFrame(fadeIn);
+    const fadeVolume = (now: number) => {
+      const progress = Math.min(1, (now - fadeStartedAt) / 250);
+      audio.volume = startingVolume + (targetVolume - startingVolume) * progress;
+      if (progress < 1) frame = requestAnimationFrame(fadeVolume);
     };
 
     document.addEventListener('pointerdown', tryPlay);
     document.addEventListener('touchstart', tryPlay);
     document.addEventListener('keydown', tryPlay);
     tryPlay();
-    frame = requestAnimationFrame(fadeIn);
+    frame = requestAnimationFrame(fadeVolume);
 
     return () => {
       removeUnlockListeners();
       cancelAnimationFrame(frame);
-      audio.pause();
     };
-  }, [active, enabled, source]);
+  }, [active, ducked, enabled, source]);
 
   const prepareAudio = useCallback(() => {
     const audio = audioRef.current;

@@ -32,13 +32,14 @@ export default function App() {
     preferences.inputMode === 'hand' &&
     ['calibration', 'roundIntro', 'playing'].includes(state.screen);
   const tracking = useHandTracking(cameraActive, videoRef, preferences.sensitivity, cameraRetry);
-  const { tone, speak } = useFeedback(preferences.sound, preferences.speech);
+  const { tone, speak, primeFeedback } = useFeedback(preferences.sound, preferences.speech);
   const questions = useMemo(() => createRoundQuestions(state.round), [state.round]);
   const question = questions[state.questionIndex];
   const { primeAmbience, startAmbience } = useBackgroundAmbience(
     question?.routine.ambience,
     preferences.sound,
     state.screen === 'playing',
+    feedback !== null,
   );
 
   const fullscreen = useCallback(() => {
@@ -47,6 +48,7 @@ export default function App() {
   }, []);
   const start = () => {
     primeAmbience();
+    primeFeedback();
     setFeedback(null);
     dispatch({ type: 'START', calibration: preferences.inputMode === 'hand', now: Date.now() });
   };

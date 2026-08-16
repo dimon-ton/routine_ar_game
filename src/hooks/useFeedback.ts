@@ -1,27 +1,60 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+
+const feedbackSources = {
+  correct: `${import.meta.env.BASE_URL}audio/correct-magic-marimba.mp3`,
+  wrong: `${import.meta.env.BASE_URL}audio/wrong-gentle-low-tone.mp3`,
+};
 
 export function useFeedback(sound: boolean, speech: boolean) {
+  const audioRef = useRef<Record<'correct' | 'wrong', HTMLAudioElement> | null>(null);
+  const soundRef = useRef(sound);
+
+  soundRef.current = sound;
+
+  useEffect(() => {
+    const correct = new Audio(feedbackSources.correct);
+    const wrong = new Audio(feedbackSources.wrong);
+    correct.preload = 'auto';
+    wrong.preload = 'auto';
+    audioRef.current = { correct, wrong };
+
+    return () => {
+      for (const audio of [correct, wrong]) {
+        audio.pause();
+        audio.removeAttribute('src');
+        audio.load();
+      }
+      audioRef.current = null;
+    };
+  }, []);
+
+  const primeFeedback = useCallback(() => {
+    if (!soundRef.current) return;
+    for (const audio of Object.values(audioRef.current ?? {})) {
+      audio.volume = 0;
+      void audio
+        .play()
+        .then(() => {
+          audio.pause();
+          audio.currentTime = 0;
+        })
+        .catch(() => undefined);
+    }
+  }, []);
+
   const tone = useCallback(
     (correct: boolean) => {
       if (!sound) return;
-      const AudioContextClass = window.AudioContext ?? window.webkitAudioContext;
-      if (!AudioContextClass) return;
-      const context = new AudioContextClass();
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(correct ? 660 : 320, context.currentTime);
-      if (correct)
-        oscillator.frequency.exponentialRampToValueAtTime(880, context.currentTime + 0.12);
-      gain.gain.setValueAtTime(0.09, context.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.2);
-      oscillator.connect(gain).connect(context.destination);
-      oscillator.start();
-      oscillator.stop(context.currentTime + 0.2);
-      oscillator.addEventListener('ended', () => void context.close());
+      const audio = audioRef.current?.[correct ? 'correct' : 'wrong'];
+      if (!audio) return;
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = correct ? 0.72 : 0.62;
+      void audio.play().catch(() => undefined);
     },
     [sound],
   );
+
   const speak = useCallback(
     (text: string) => {
       if (!sound || !speech || !('speechSynthesis' in window)) return;
@@ -33,11 +66,6 @@ export function useFeedback(sound: boolean, speech: boolean) {
     },
     [sound, speech],
   );
-  return { tone, speak };
-}
 
-declare global {
-  interface Window {
-    webkitAudioContext?: typeof AudioContext;
-  }
+  return { tone, speak, primeFeedback };
 }

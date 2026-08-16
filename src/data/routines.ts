@@ -12,7 +12,7 @@ export const ROUTINES: RoutineItem[] = [
     spokenTime: "six o'clock",
     illustration: asset('illustrations/wake-up.webp'),
     clockIllustration: asset('illustrations/clock-6.webp'),
-    ambience: asset('audio/wake-up-morning-birds.mp3'),
+    ambience: asset('audio/children-focus-background.mp3'),
     distractorIds: ['breakfast', 'bed'],
   },
   {
@@ -24,7 +24,7 @@ export const ROUTINES: RoutineItem[] = [
     spokenTime: "seven o'clock",
     illustration: asset('illustrations/breakfast.webp'),
     clockIllustration: asset('illustrations/clock-7.webp'),
-    ambience: asset('audio/breakfast-kettle.mp3'),
+    ambience: asset('audio/children-focus-background.mp3'),
     distractorIds: ['dinner', 'school'],
   },
   {
@@ -36,7 +36,7 @@ export const ROUTINES: RoutineItem[] = [
     spokenTime: "eight o'clock",
     illustration: asset('illustrations/school.webp'),
     clockIllustration: asset('illustrations/clock-8.webp'),
-    ambience: asset('audio/school-playground.mp3'),
+    ambience: asset('audio/children-focus-background.mp3'),
     distractorIds: ['homework', 'wake-up'],
   },
   {
@@ -48,7 +48,7 @@ export const ROUTINES: RoutineItem[] = [
     spokenTime: "four o'clock",
     illustration: asset('illustrations/homework.webp'),
     clockIllustration: asset('illustrations/clock-4.webp'),
-    ambience: asset('audio/homework-office.mp3'),
+    ambience: asset('audio/children-focus-background.mp3'),
     distractorIds: ['school', 'dinner'],
   },
   {
@@ -60,7 +60,7 @@ export const ROUTINES: RoutineItem[] = [
     spokenTime: "six o'clock",
     illustration: asset('illustrations/dinner.webp'),
     clockIllustration: asset('illustrations/clock-6.webp'),
-    ambience: asset('audio/dinner-restaurant.mp3'),
+    ambience: asset('audio/children-focus-background.mp3'),
     distractorIds: ['breakfast', 'bed'],
   },
   {
@@ -72,7 +72,7 @@ export const ROUTINES: RoutineItem[] = [
     spokenTime: "nine o'clock",
     illustration: asset('illustrations/bed.webp'),
     clockIllustration: asset('illustrations/clock-9.webp'),
-    ambience: asset('audio/bedtime-crickets.mp3'),
+    ambience: asset('audio/children-focus-background.mp3'),
     distractorIds: ['wake-up', 'homework'],
   },
 ];

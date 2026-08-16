@@ -40,6 +40,7 @@ export default function App() {
     preferences.sound,
     state.screen === 'playing',
     feedback !== null,
+    preferences.backgroundVolume,
   );
 
   const fullscreen = useCallback(() => {

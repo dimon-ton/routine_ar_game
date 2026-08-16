@@ -52,6 +52,7 @@ export interface Preferences {
   inputMode: InputMode;
   gestureMode: GestureMode;
   sound: boolean;
+  backgroundVolume: number;
   speech: boolean;
   cameraOpacity: number;
   sensitivity: number;

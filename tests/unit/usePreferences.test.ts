@@ -22,4 +22,16 @@ describe('usePreferences', () => {
     const returning = renderHook(() => usePreferences());
     expect(returning.result.current[0].sound).toBe(false);
   });
+
+  it('defaults and persists the background volume independently', async () => {
+    const hook = renderHook(() => usePreferences());
+    expect(hook.result.current[0].backgroundVolume).toBe(0.08);
+
+    act(() => hook.result.current[1]((current) => ({ ...current, backgroundVolume: 0.14 })));
+    await waitFor(() =>
+      expect(
+        JSON.parse(localStorage.getItem('daily-routine-preferences') ?? '{}').backgroundVolume,
+      ).toBe(0.14),
+    );
+  });
 });

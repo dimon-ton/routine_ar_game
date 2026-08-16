@@ -87,6 +87,18 @@ export function TeacherSettings({
           />
         </label>
         <label>
+          Background volume <output>{Math.round(preferences.backgroundVolume * 100)}%</output>
+          <input
+            type="range"
+            aria-label="Background volume"
+            min="0"
+            max="0.2"
+            step="0.01"
+            value={preferences.backgroundVolume}
+            onChange={(event) => update('backgroundVolume', Number(event.target.value))}
+          />
+        </label>
+        <label>
           Camera visibility <output>{Math.round(preferences.cameraOpacity * 100)}%</output>
           <input
             type="range"

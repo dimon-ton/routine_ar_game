@@ -49,7 +49,7 @@ Keyboard shortcuts: `F` fullscreen, `M` mute, `R` restart the current question, 
 - Use a fullscreen projector display at 16:9.
 - Place the camera near the projected display so pointing feels natural.
 
-Teacher Settings also controls hand input, Pinch/Dwell, sound (including routine ambience), speech, camera visibility, cursor sensitivity, dwell duration, question/round restart, skip, and fullscreen.
+Teacher Settings also controls hand input, Pinch/Dwell, sound, background volume, speech, camera visibility, cursor sensitivity, dwell duration, question/round restart, skip, and fullscreen.
 
 ## Editing lesson content
 

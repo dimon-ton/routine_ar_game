@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-const AMBIENCE_VOLUME = 0.08;
-const DUCKED_VOLUME = 0.025;
-
 export function useBackgroundAmbience(
   source: string | undefined,
   enabled: boolean,
   active: boolean,
   ducked: boolean,
+  volume: number,
 ) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const sourceRef = useRef(source);
@@ -49,7 +47,7 @@ export function useBackgroundAmbience(
     let frame = 0;
     const fadeStartedAt = performance.now();
     const startingVolume = audio.volume;
-    const targetVolume = ducked ? DUCKED_VOLUME : AMBIENCE_VOLUME;
+    const targetVolume = ducked ? volume * 0.3 : volume;
 
     const removeUnlockListeners = () => {
       document.removeEventListener('pointerdown', tryPlay);
@@ -78,7 +76,7 @@ export function useBackgroundAmbience(
       removeUnlockListeners();
       cancelAnimationFrame(frame);
     };
-  }, [active, ducked, enabled, source]);
+  }, [active, ducked, enabled, source, volume]);
 
   const prepareAudio = useCallback(() => {
     const audio = audioRef.current;
@@ -109,9 +107,9 @@ export function useBackgroundAmbience(
   const startAmbience = useCallback(() => {
     const audio = prepareAudio();
     if (!audio) return;
-    audio.volume = AMBIENCE_VOLUME;
+    audio.volume = volume;
     void audio.play().catch(() => undefined);
-  }, [prepareAudio]);
+  }, [prepareAudio, volume]);
 
   return { primeAmbience, startAmbience };
 }

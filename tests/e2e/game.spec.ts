@@ -199,6 +199,24 @@ test('shows gentle retry feedback after an incorrect answer', async ({ page }) =
   await expect(page.getByText(/Try again!/)).toBeVisible();
   await expect(page.getByText('Question 1/6')).toBeVisible();
 });
+
+test('lets the teacher set and persist the background volume', async ({ page }) => {
+  await startMouse(page);
+  await page.getByRole('button', { name: 'Open teacher settings' }).click();
+  const volume = page.getByRole('slider', { name: /Background volume/ });
+  await expect(volume).toHaveValue('0.08');
+  await volume.fill('0.14');
+  await expect(page.getByText('14%', { exact: true })).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          JSON.parse(localStorage.getItem('daily-routine-preferences') ?? '{}').backgroundVolume,
+      ),
+    )
+    .toBe(0.14);
+});
+
 test('advances through rounds, displays results, and restarts', async ({ page }) => {
   await startMouse(page);
   await finishRound(page, 1);

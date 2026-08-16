@@ -1,5 +1,4 @@
 export type InputMode = 'hand' | 'mouse';
-export type GestureMode = 'pinch' | 'dwell';
 export type RoundNumber = 1 | 2 | 3;
 export type Screen = 'welcome' | 'calibration' | 'roundIntro' | 'playing' | 'results' | 'review';
 
@@ -50,11 +49,9 @@ export interface GameState {
 
 export interface Preferences {
   inputMode: InputMode;
-  gestureMode: GestureMode;
   sound: boolean;
   backgroundVolume: number;
   speech: boolean;
   cameraOpacity: number;
   sensitivity: number;
-  dwellDuration: number;
 }

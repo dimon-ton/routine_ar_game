@@ -285,8 +285,6 @@ export default function App() {
         pointerRef={tracking.pointerRef}
         landmarksRef={tracking.landmarksRef}
         pinchRef={tracking.pinchRef}
-        gesture={preferences.gestureMode}
-        dwellDuration={preferences.dwellDuration}
         onSelect={handSelect}
       />
     </div>

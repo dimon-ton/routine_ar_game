@@ -1,5 +1,4 @@
 import { useEffect, useRef, type MutableRefObject } from 'react';
-import type { GestureMode } from '../../types/game';
 import type { HandPoint, HandSkeletonPoint } from './useHandTracking';
 
 const HAND_CONNECTIONS = [
@@ -31,20 +30,10 @@ interface Props {
   pointerRef: MutableRefObject<HandPoint>;
   landmarksRef: MutableRefObject<HandSkeletonPoint[]>;
   pinchRef: MutableRefObject<{ closed: boolean; changedAt: number }>;
-  gesture: GestureMode;
-  dwellDuration: number;
   onSelect: (id: string) => void;
 }
 
-export function HandCursorOverlay({
-  active,
-  pointerRef,
-  landmarksRef,
-  pinchRef,
-  gesture,
-  dwellDuration,
-  onSelect,
-}: Props) {
+export function HandCursorOverlay({ active, pointerRef, landmarksRef, pinchRef, onSelect }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const onSelectRef = useRef(onSelect);
   onSelectRef.current = onSelect;
@@ -56,7 +45,6 @@ export function HandCursorOverlay({
     if (!canvas || !context) return;
     let animation = 0;
     let hoverTarget: HTMLElement | null = null;
-    let hoverStart = 0;
     let pinchWasClosed = false;
     let cooldownUntil = 0;
 
@@ -113,19 +101,9 @@ export function HandCursorOverlay({
           candidate instanceof HTMLButtonElement && candidate.disabled ? null : candidate;
         if (target !== hoverTarget) {
           hoverTarget = target;
-          hoverStart = now;
-        }
-        let progress = 0;
-        if (gesture === 'dwell' && target) {
-          progress = Math.min(1, (now - hoverStart) / dwellDuration);
-          if (progress >= 1 && now >= cooldownUntil) {
-            activate(target);
-            cooldownUntil = now + 1000;
-            hoverStart = now;
-          }
         }
         const closed = pinchRef.current.closed;
-        if (gesture === 'pinch' && closed && !pinchWasClosed && target && now >= cooldownUntil) {
+        if (closed && !pinchWasClosed && target && now >= cooldownUntil) {
           activate(target);
           cooldownUntil = now + 500;
         }
@@ -137,13 +115,6 @@ export function HandCursorOverlay({
         context.lineWidth = 5;
         context.strokeStyle = target ? '#50e3a4' : '#6149e7';
         context.stroke();
-        if (gesture === 'dwell' && target) {
-          context.beginPath();
-          context.arc(point.x, point.y, 29, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * progress);
-          context.lineWidth = 7;
-          context.strokeStyle = '#50e3a4';
-          context.stroke();
-        }
       } else {
         hoverTarget = null;
         pinchWasClosed = false;
@@ -152,7 +123,7 @@ export function HandCursorOverlay({
     };
     animation = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(animation);
-  }, [active, dwellDuration, gesture, landmarksRef, pinchRef, pointerRef]);
+  }, [active, landmarksRef, pinchRef, pointerRef]);
 
   return <canvas ref={canvasRef} className="hand-canvas" aria-hidden="true" />;
 }

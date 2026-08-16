@@ -102,7 +102,9 @@ export function GameScreen({
           <span>Hand not detected — raise your hand or use Mouse / Touch.</span>
         ) : (
           <span>
-            {round === 1 ? 'Point, then pinch or hold to choose' : 'Choose the best answer'}
+            {round === 1
+              ? 'Point, then pinch your thumb and index finger to choose'
+              : 'Choose the best answer'}
           </span>
         )}
       </div>

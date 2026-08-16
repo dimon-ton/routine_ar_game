@@ -56,6 +56,17 @@ test('starts without requesting a camera and completes a correct Round 1 answer'
   await expect(page.getByText('Question 2/6')).toBeVisible();
 });
 
+test('requires a pinch gesture and explains it to the student', async ({ page }) => {
+  await page.goto('/?test=1');
+  await page.getByRole('button', { name: /Mouse \/ Touch/ }).click();
+  await page.getByRole('button', { name: /Start Game/ }).click();
+  await expect(page.getByText(/pinch your thumb and index finger/i)).toBeVisible();
+  await page.getByRole('button', { name: /Continue/ }).click();
+  await expect(page.getByText(/pinch your thumb and index finger to choose/i)).toBeVisible();
+  await page.getByRole('button', { name: 'Open teacher settings' }).click();
+  await expect(page.getByRole('button', { name: 'Dwell' })).toHaveCount(0);
+});
+
 test('starts audible looping ambience when the first question begins', async ({ page }) => {
   await page.addInitScript(() => {
     const originalPlay = HTMLMediaElement.prototype.play;

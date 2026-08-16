@@ -3,13 +3,11 @@ import type { Preferences } from '../types/game';
 
 const defaults: Preferences = {
   inputMode: 'hand',
-  gestureMode: 'pinch',
   sound: true,
   backgroundVolume: 0.08,
   speech: true,
   cameraOpacity: 0.72,
   sensitivity: 1.15,
-  dwellDuration: 900,
 };
 const soundDefaultMigrationKey = 'daily-routine-sound-default-v2';
 

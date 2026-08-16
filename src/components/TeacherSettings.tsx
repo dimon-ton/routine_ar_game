@@ -53,23 +53,6 @@ export function TeacherSettings({
             onChange={(event) => update('inputMode', event.target.checked ? 'hand' : 'mouse')}
           />
         </label>
-        <fieldset>
-          <legend>Hand selection</legend>
-          <div className="segmented">
-            <button
-              className={preferences.gestureMode === 'pinch' ? 'selected' : ''}
-              onClick={() => update('gestureMode', 'pinch')}
-            >
-              Pinch
-            </button>
-            <button
-              className={preferences.gestureMode === 'dwell' ? 'selected' : ''}
-              onClick={() => update('gestureMode', 'dwell')}
-            >
-              Dwell
-            </button>
-          </div>
-        </fieldset>
         <label className="setting-row">
           <span>Sound &amp; ambience</span>
           <input
@@ -118,17 +101,6 @@ export function TeacherSettings({
             step="0.1"
             value={preferences.sensitivity}
             onChange={(event) => update('sensitivity', Number(event.target.value))}
-          />
-        </label>
-        <label>
-          Dwell duration <output>{preferences.dwellDuration} ms</output>
-          <input
-            type="range"
-            min="600"
-            max="1500"
-            step="100"
-            value={preferences.dwellDuration}
-            onChange={(event) => update('dwellDuration', Number(event.target.value))}
           />
         </label>
         <div className="settings-actions">

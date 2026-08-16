@@ -51,7 +51,7 @@ export function CalibrationScreen({
                 : status === 'loading'
                   ? 'Loading the MediaPipe hand model. This may take a moment the first time.'
                   : detected
-                    ? 'Great! Move the pointer onto the glowing target and pinch (or hold).'
+                    ? 'Great! Move the pointer onto the glowing target and pinch your thumb and index finger.'
                     : 'Face your palm toward the camera in a well-lit space.'}
             </p>
             <button

@@ -33,7 +33,7 @@ Playwright is configured to use the locally installed Google Chrome. If Chrome i
 
 ## Hand tracking
 
-Choose **Hand Tracking**, then press **Start Game**. Camera permission is requested only at that point. Raise one hand, move the index-fingertip cursor to the calibration target, and pinch to select. In Teacher Settings, selection can be changed to a dwell gesture (hold on a target until the ring fills). MediaPipe inference and camera frames stay in the browser; frames are never uploaded or stored. Only preferences and the latest score summary use `localStorage`.
+Choose **Hand Tracking**, then press **Start Game**. Camera permission is requested only at that point. Raise one hand, move the index-fingertip cursor to the calibration target, and pinch your thumb and index finger to select. MediaPipe inference and camera frames stay in the browser; frames are never uploaded or stored. Only preferences and the latest score summary use `localStorage`.
 
 When a hand is detected, the canvas overlay draws its landmark skeleton. After the initial Start click grants camera access, students can point and pinch to activate Continue buttons, answer cards, and other enabled buttons throughout the activity.
 
@@ -49,7 +49,7 @@ Keyboard shortcuts: `F` fullscreen, `M` mute, `R` restart the current question, 
 - Use a fullscreen projector display at 16:9.
 - Place the camera near the projected display so pointing feels natural.
 
-Teacher Settings also controls hand input, Pinch/Dwell, sound, background volume, speech, camera visibility, cursor sensitivity, dwell duration, question/round restart, skip, and fullscreen.
+Teacher Settings also controls hand input, sound, background volume, speech, camera visibility, cursor sensitivity, question/round restart, skip, and fullscreen.
 
 ## Editing lesson content
 

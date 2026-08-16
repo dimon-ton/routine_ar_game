@@ -3,7 +3,7 @@ import type { RoundNumber } from '../types/game';
 const info = {
   1: {
     title: 'Catch the Picture',
-    instruction: 'Move your hand and select the picture that matches the word.',
+    instruction: 'Point to the matching picture, then pinch your thumb and index finger.',
     focus: 'Vocabulary',
   },
   2: {

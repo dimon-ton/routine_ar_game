@@ -1,12 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
 
 const answers: Record<string, string> = {
-  'Wake up': 'Wake up',
-  'Have breakfast': 'Have breakfast',
-  'Go to school': 'Go to school',
-  'Do homework': 'Do homework',
-  'Have dinner': 'Have dinner',
-  'Go to bed': 'Go to bed',
+  'wake up': 'wake up',
+  'have breakfast': 'have breakfast',
+  'go to school': 'go to school',
+  'do homework': 'do homework',
+  'have dinner': 'have dinner',
+  'go to bed': 'go to bed',
 };
 const sentences: Record<string, string> = {
   'What time do you wake up?': "I wake up at six o'clock.",

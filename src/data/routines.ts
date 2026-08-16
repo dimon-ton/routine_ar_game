@@ -5,7 +5,7 @@ const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 export const ROUTINES: RoutineItem[] = [
   {
     id: 'wake-up',
-    phrase: 'Wake up',
+    phrase: 'wake up',
     question: 'What time do you wake up?',
     answer: "I wake up at six o'clock.",
     digitalTime: '6:00',
@@ -17,7 +17,7 @@ export const ROUTINES: RoutineItem[] = [
   },
   {
     id: 'breakfast',
-    phrase: 'Have breakfast',
+    phrase: 'have breakfast',
     question: 'What time do you have breakfast?',
     answer: "I have breakfast at seven o'clock.",
     digitalTime: '7:00',
@@ -29,7 +29,7 @@ export const ROUTINES: RoutineItem[] = [
   },
   {
     id: 'school',
-    phrase: 'Go to school',
+    phrase: 'go to school',
     question: 'What time do you go to school?',
     answer: "I go to school at eight o'clock.",
     digitalTime: '8:00',
@@ -41,7 +41,7 @@ export const ROUTINES: RoutineItem[] = [
   },
   {
     id: 'homework',
-    phrase: 'Do homework',
+    phrase: 'do homework',
     question: 'What time do you do homework?',
     answer: "I do homework at four o'clock.",
     digitalTime: '4:00 PM',
@@ -53,7 +53,7 @@ export const ROUTINES: RoutineItem[] = [
   },
   {
     id: 'dinner',
-    phrase: 'Have dinner',
+    phrase: 'have dinner',
     question: 'What time do you have dinner?',
     answer: "I have dinner at six o'clock.",
     digitalTime: '6:00 PM',
@@ -65,7 +65,7 @@ export const ROUTINES: RoutineItem[] = [
   },
   {
     id: 'bed',
-    phrase: 'Go to bed',
+    phrase: 'go to bed',
     question: 'What time do you go to bed?',
     answer: "I go to bed at nine o'clock.",
     digitalTime: '9:00 PM',

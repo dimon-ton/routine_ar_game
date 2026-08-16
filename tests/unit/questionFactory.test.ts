@@ -8,6 +8,9 @@ import {
 } from '../../src/utils/questionFactory';
 
 describe('questionFactory', () => {
+  it('starts every vocabulary phrase with a lowercase letter', () => {
+    expect(ROUTINES.every((routine) => /^[a-z]/.test(routine.phrase))).toBe(true);
+  });
   it('shuffles without losing values', () => {
     expect(shuffle([1, 2, 3], () => 0)).toEqual([2, 3, 1]);
   });

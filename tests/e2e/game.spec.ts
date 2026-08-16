@@ -55,6 +55,45 @@ test('starts without requesting a camera and completes a correct Round 1 answer'
   await expect(page.getByText(/Correct! \+1 point/)).toBeVisible();
   await expect(page.getByText('Question 2/6')).toBeVisible();
 });
+
+test('starts audible looping ambience when the first question begins', async ({ page }) => {
+  await page.addInitScript(() => {
+    const originalPlay = HTMLMediaElement.prototype.play;
+    const testedWindow = window as typeof window & {
+      ambiencePlayCalls: Array<{ src: string; loop: boolean; volume: number }>;
+    };
+    testedWindow.ambiencePlayCalls = [];
+    HTMLMediaElement.prototype.play = function () {
+      testedWindow.ambiencePlayCalls.push({
+        src: this.currentSrc || this.src,
+        loop: this.loop,
+        volume: this.volume,
+      });
+      return originalPlay.call(this);
+    };
+  });
+
+  await startMouse(page);
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          (
+            window as typeof window & {
+              ambiencePlayCalls: Array<{ src: string; loop: boolean; volume: number }>;
+            }
+          ).ambiencePlayCalls,
+      ),
+    )
+    .toContainEqual(
+      expect.objectContaining({
+        src: expect.stringContaining('wake-up-morning-birds.mp3'),
+        loop: true,
+        volume: 0.28,
+      }),
+    );
+});
+
 test('shows gentle retry feedback after an incorrect answer', async ({ page }) => {
   await startMouse(page);
   const heading = await currentHeading(page);

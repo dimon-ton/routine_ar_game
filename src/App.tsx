@@ -35,9 +35,10 @@ export default function App() {
   const { tone, speak } = useFeedback(preferences.sound, preferences.speech);
   const questions = useMemo(() => createRoundQuestions(state.round), [state.round]);
   const question = questions[state.questionIndex];
-  useBackgroundAmbience(
-    state.screen === 'playing' ? question?.routine.ambience : undefined,
+  const startAmbience = useBackgroundAmbience(
+    question?.routine.ambience,
     preferences.sound,
+    state.screen === 'playing',
   );
 
   const fullscreen = useCallback(() => {
@@ -195,7 +196,13 @@ export default function App() {
         />
       )}
       {state.screen === 'roundIntro' && (
-        <RoundIntro round={state.round} onContinue={() => dispatch({ type: 'BEGIN_ROUND' })} />
+        <RoundIntro
+          round={state.round}
+          onContinue={() => {
+            startAmbience();
+            dispatch({ type: 'BEGIN_ROUND' });
+          }}
+        />
       )}
       {state.screen === 'playing' && (
         <GameScreen

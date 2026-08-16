@@ -5,6 +5,7 @@ export type Screen = 'welcome' | 'calibration' | 'roundIntro' | 'playing' | 'res
 export interface RoutineItem {
   id: string;
   phrase: string;
+  translation: string;
   question: string;
   answer: string;
   digitalTime: string;

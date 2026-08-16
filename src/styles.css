@@ -364,6 +364,12 @@ h2 {
   font-size: clamp(2.5rem, 5.4vw, 5rem);
   text-shadow: 0 5px 18px #16133c55;
 }
+.vocabulary-translation {
+  margin: 6px 0 0;
+  color: #fff3a2;
+  font-size: clamp(1.2rem, 2.2vw, 2rem);
+  font-weight: 800;
+}
 .question-kicker {
   margin: 0 0 4px;
   text-transform: uppercase;

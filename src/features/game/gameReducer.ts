@@ -1,4 +1,5 @@
 import type { GameState, RoundNumber } from '../../types/game';
+import { QUESTIONS_PER_ROUND, TOTAL_QUESTIONS } from '../../data/routines';
 
 const emptyRound = () => ({ correct: 0, firstAttemptCorrect: 0, retries: 0 });
 
@@ -33,7 +34,7 @@ export type GameAction =
   | { type: 'RESET' };
 
 function advance(state: GameState, now: number): GameState {
-  if (state.questionIndex < 5)
+  if (state.questionIndex < QUESTIONS_PER_ROUND - 1)
     return { ...state, questionIndex: state.questionIndex + 1, attemptsOnQuestion: 0 };
   if (state.round < 3)
     return {
@@ -119,7 +120,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 }
 
 export const accuracy = (state: Pick<GameState, 'firstAttemptCorrect'>) =>
-  Math.round((state.firstAttemptCorrect / 18) * 100);
+  Math.round((state.firstAttemptCorrect / TOTAL_QUESTIONS) * 100);
 export const elapsedSeconds = (
   state: Pick<GameState, 'startedAt' | 'finishedAt'>,
   now = Date.now(),

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { accuracy, createInitialState, gameReducer } from '../../src/features/game/gameReducer';
+import { QUESTIONS_PER_ROUND } from '../../src/data/routines';
 import type { GameState } from '../../src/types/game';
 
 describe('gameReducer', () => {
@@ -10,7 +11,7 @@ describe('gameReducer', () => {
     expect(state.score).toBe(1);
     expect(state.firstAttemptCorrect).toBe(1);
     expect(state.questionIndex).toBe(1);
-    expect(accuracy(state)).toBe(6);
+    expect(accuracy(state)).toBe(4);
   });
   it('counts retries and does not count a retried answer as first-attempt correct', () => {
     let state = gameReducer(
@@ -30,9 +31,9 @@ describe('gameReducer', () => {
     expect(duplicate).toBe(state);
     expect(duplicate.score).toBe(1);
   });
-  it('progresses through rounds after six completed questions', () => {
+  it('progresses through rounds after all eight vocabulary questions', () => {
     let state: GameState = { ...createInitialState(), screen: 'playing' };
-    for (let i = 0; i < 6; i += 1)
+    for (let i = 0; i < QUESTIONS_PER_ROUND; i += 1)
       state = gameReducer(state, { type: 'CORRECT', id: `1-${i}`, now: i });
     expect(state.round).toBe(2);
     expect(state.screen).toBe('roundIntro');
@@ -43,7 +44,7 @@ describe('gameReducer', () => {
       ...createInitialState(),
       screen: 'playing' as const,
       round: 3 as const,
-      questionIndex: 5,
+      questionIndex: QUESTIONS_PER_ROUND - 1,
       startedAt: 1,
     };
     state = gameReducer(state, { type: 'CORRECT', id: '3-last', now: 5000 });

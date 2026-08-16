@@ -1,4 +1,4 @@
-import { ROUTINES } from '../data/routines';
+import { QUESTIONS_PER_ROUND, ROUTINES, TOTAL_QUESTIONS } from '../data/routines';
 import { accuracy, elapsedSeconds } from '../features/game/gameReducer';
 import type { GameState } from '../types/game';
 
@@ -33,6 +33,7 @@ export function ResultsScreen({
                     {item.phrase} · {item.digitalTime}
                   </strong>
                   <p>{item.answer}</p>
+                  <p lang="th">{item.translation}</p>
                 </div>
               </article>
             ))}
@@ -46,11 +47,11 @@ export function ResultsScreen({
   const pct = accuracy(state);
   const time = elapsedSeconds(state);
   const message =
-    state.score >= 16
+    state.score >= Math.ceil(TOTAL_QUESTIONS * 0.89)
       ? 'Excellent! You are a Daily Routine Star!'
-      : state.score >= 12
+      : state.score >= Math.ceil(TOTAL_QUESTIONS * 0.67)
         ? 'Great work! Keep practicing!'
-        : state.score >= 8
+        : state.score >= Math.ceil(TOTAL_QUESTIONS * 0.45)
           ? 'Good effort! Let’s try one more time!'
           : 'Keep going! Practice makes progress!';
   return (
@@ -64,7 +65,7 @@ export function ResultsScreen({
         <p className="motivation">{message}</p>
         <div className="score-ring">
           <strong>{state.score}</strong>
-          <span>out of 18</span>
+          <span>out of {TOTAL_QUESTIONS}</span>
         </div>
         <div className="stat-grid">
           <div>
@@ -84,7 +85,7 @@ export function ResultsScreen({
           {([1, 2, 3] as const).map((round) => (
             <div key={round}>
               <span>Round {round}</span>
-              <strong>{state.roundResults[round].correct}/6</strong>
+              <strong>{state.roundResults[round].correct}/{QUESTIONS_PER_ROUND}</strong>
             </div>
           ))}
         </div>

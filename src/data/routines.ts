@@ -6,6 +6,7 @@ export const ROUTINES: RoutineItem[] = [
   {
     id: 'wake-up',
     phrase: 'wake up',
+    translation: 'ตื่นนอน',
     question: 'What time do you wake up?',
     answer: "I wake up at six o'clock.",
     digitalTime: '6:00',
@@ -16,8 +17,35 @@ export const ROUTINES: RoutineItem[] = [
     distractorIds: ['breakfast', 'bed'],
   },
   {
+    id: 'brush-teeth',
+    phrase: 'brush my teeth',
+    translation: 'แปรงฟัน',
+    question: 'What time do you brush your teeth?',
+    answer: 'I brush my teeth at six fifteen.',
+    digitalTime: '6:15',
+    spokenTime: 'six fifteen',
+    illustration: asset('illustrations/brush-teeth.svg'),
+    clockIllustration: asset('illustrations/clock-6-15.svg'),
+    ambience: asset('audio/children-focus-background.mp3'),
+    distractorIds: ['school', 'bed'],
+  },
+  {
+    id: 'take-shower',
+    phrase: 'take a shower',
+    translation: 'อาบน้ำ',
+    question: 'What time do you take a shower?',
+    answer: 'I take a shower at six thirty.',
+    digitalTime: '6:30',
+    spokenTime: 'six thirty',
+    illustration: asset('illustrations/take-shower.svg'),
+    clockIllustration: asset('illustrations/clock-6-30.svg'),
+    ambience: asset('audio/children-focus-background.mp3'),
+    distractorIds: ['homework', 'school'],
+  },
+  {
     id: 'breakfast',
     phrase: 'have breakfast',
+    translation: 'รับประทานอาหารเช้า',
     question: 'What time do you have breakfast?',
     answer: "I have breakfast at seven o'clock.",
     digitalTime: '7:00',
@@ -30,6 +58,7 @@ export const ROUTINES: RoutineItem[] = [
   {
     id: 'school',
     phrase: 'go to school',
+    translation: 'ไปโรงเรียน',
     question: 'What time do you go to school?',
     answer: "I go to school at eight o'clock.",
     digitalTime: '8:00',
@@ -42,6 +71,7 @@ export const ROUTINES: RoutineItem[] = [
   {
     id: 'homework',
     phrase: 'do homework',
+    translation: 'ทำการบ้าน',
     question: 'What time do you do homework?',
     answer: "I do homework at four o'clock.",
     digitalTime: '4:00 PM',
@@ -54,6 +84,7 @@ export const ROUTINES: RoutineItem[] = [
   {
     id: 'dinner',
     phrase: 'have dinner',
+    translation: 'รับประทานอาหารเย็น',
     question: 'What time do you have dinner?',
     answer: "I have dinner at six o'clock.",
     digitalTime: '6:00 PM',
@@ -66,6 +97,7 @@ export const ROUTINES: RoutineItem[] = [
   {
     id: 'bed',
     phrase: 'go to bed',
+    translation: 'เข้านอน',
     question: 'What time do you go to bed?',
     answer: "I go to bed at nine o'clock.",
     digitalTime: '9:00 PM',
@@ -78,3 +110,5 @@ export const ROUTINES: RoutineItem[] = [
 ];
 
 export const ROUTINE_BY_ID = Object.fromEntries(ROUTINES.map((item) => [item.id, item]));
+export const QUESTIONS_PER_ROUND = ROUTINES.length;
+export const TOTAL_QUESTIONS = QUESTIONS_PER_ROUND * 3;

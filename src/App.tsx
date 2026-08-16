@@ -13,6 +13,7 @@ import { useBackgroundAmbience } from './hooks/useBackgroundAmbience';
 import { usePreferences } from './hooks/usePreferences';
 import type { Choice } from './types/game';
 import { createRoundQuestions } from './utils/questionFactory';
+import { TOTAL_QUESTIONS } from './data/routines';
 
 const testMode = new URLSearchParams(location.search).has('test');
 
@@ -135,7 +136,7 @@ export default function App() {
         'daily-routine-latest-score',
         JSON.stringify({
           score: state.score,
-          accuracy: Math.round((state.firstAttemptCorrect / 18) * 100),
+          accuracy: Math.round((state.firstAttemptCorrect / TOTAL_QUESTIONS) * 100),
           retries: state.retries,
           seconds: elapsedSeconds(state),
           completedAt: new Date().toISOString(),

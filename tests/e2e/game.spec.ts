@@ -2,6 +2,8 @@ import { expect, test, type Page } from '@playwright/test';
 
 const answers: Record<string, string> = {
   'wake up': 'wake up',
+  'brush my teeth': 'brush my teeth',
+  'take a shower': 'take a shower',
   'have breakfast': 'have breakfast',
   'go to school': 'go to school',
   'do homework': 'do homework',
@@ -10,6 +12,8 @@ const answers: Record<string, string> = {
 };
 const sentences: Record<string, string> = {
   'What time do you wake up?': "I wake up at six o'clock.",
+  'What time do you brush your teeth?': 'I brush my teeth at six fifteen.',
+  'What time do you take a shower?': 'I take a shower at six thirty.',
   'What time do you have breakfast?': "I have breakfast at seven o'clock.",
   'What time do you go to school?': "I go to school at eight o'clock.",
   'What time do you do homework?': "I do homework at four o'clock.",
@@ -40,9 +44,9 @@ async function answerCorrect(page: Page, round: number) {
     .click();
 }
 async function finishRound(page: Page, round: number) {
-  for (let i = 0; i < 6; i += 1) {
+  for (let i = 0; i < 8; i += 1) {
     await answerCorrect(page, round);
-    if (i < 5) await expect(page.getByText(`Question ${i + 2}/6`)).toBeVisible();
+    if (i < 7) await expect(page.getByText(`Question ${i + 2}/8`)).toBeVisible();
   }
 }
 
@@ -53,7 +57,7 @@ test('starts without requesting a camera and completes a correct Round 1 answer'
   await expect(page.getByText('Round 1')).toBeVisible();
   await answerCorrect(page, 1);
   await expect(page.getByText(/Correct! \+1 point/)).toBeVisible();
-  await expect(page.getByText('Question 2/6')).toBeVisible();
+  await expect(page.getByText('Question 2/8')).toBeVisible();
 });
 
 test('requires a pinch gesture and explains it to the student', async ({ page }) => {
@@ -208,7 +212,7 @@ test('shows gentle retry feedback after an incorrect answer', async ({ page }) =
     }
   }
   await expect(page.getByText(/Try again!/)).toBeVisible();
-  await expect(page.getByText('Question 1/6')).toBeVisible();
+  await expect(page.getByText('Question 1/8')).toBeVisible();
 });
 
 test('lets the teacher set and persist the background volume', async ({ page }) => {
@@ -280,7 +284,7 @@ test('advances through rounds, displays results, and restarts', async ({ page })
   await page.getByRole('button', { name: /Continue/ }).click();
   await finishRound(page, 3);
   await expect(page.getByRole('heading', { name: 'Great Job!' })).toBeVisible();
-  await expect(page.getByText('18', { exact: true })).toBeVisible();
+  await expect(page.getByText('24', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Play Again' }).click();
   await expect(page.getByText('Round 1 of 3')).toBeVisible();
 });

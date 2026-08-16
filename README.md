@@ -1,6 +1,6 @@
 # Daily Routine AR Challenge
 
-A cheerful, browser-based English practice game for Thai primary students. Across three six-question rounds, learners connect daily-routine vocabulary to pictures, comprehend routine times, and choose complete model sentences. The 18-point activity is designed for a focused 15-minute lesson station.
+A cheerful, browser-based English practice game for Thai primary students. Across three eight-question rounds, learners connect eight daily-routine vocabulary phrases to pictures, comprehend routine times, and choose complete model sentences. The 24-point activity is designed for a focused lesson station.
 
 Live site: https://dimon-ton.github.io/routine_ar_game/
 
@@ -55,7 +55,7 @@ Teacher Settings also controls hand input, sound, background volume, speech, cam
 
 All typed lesson records live in [`src/data/routines.ts`](src/data/routines.ts). Edit a phrase, question, model answer, displayed time, spoken time, illustration path, ambience path, or distractor IDs there. Add matching local images under `public/illustrations/` and audio under `public/audio/`. The current routine artwork was generated with Codex Image 2 and optimized as WebP for the game. Question choices are generated in `src/utils/questionFactory.ts`; duplicate time choices and repeated correct-card positions are prevented automatically.
 
-The six routine ambience clips are local, web-compressed versions of free Mixkit sound effects. Source and license details are recorded in [`public/audio/SOURCES.md`](public/audio/SOURCES.md).
+The background and feedback clips are stored locally. Source and license details are recorded in [`public/audio/SOURCES.md`](public/audio/SOURCES.md).
 
 ## Static deployment
 

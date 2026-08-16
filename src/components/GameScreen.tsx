@@ -1,4 +1,5 @@
 import type { Choice, GameQuestion, RoundNumber } from '../types/game';
+import { QUESTIONS_PER_ROUND } from '../data/routines';
 
 const titles = { 1: 'Catch the Picture', 2: 'Catch the Time', 3: 'Choose the Correct Sentence' };
 interface Props {
@@ -30,10 +31,13 @@ export function GameScreen({
           <span className="round-badge">Round {round}</span>
           <strong>{titles[round]}</strong>
         </div>
-        <div className="progress-wrap" aria-label={`Question ${index + 1} of 6`}>
-          <span>Question {index + 1}/6</span>
+        <div
+          className="progress-wrap"
+          aria-label={`Question ${index + 1} of ${QUESTIONS_PER_ROUND}`}
+        >
+          <span>Question {index + 1}/{QUESTIONS_PER_ROUND}</span>
           <div className="progress-track">
-            <i style={{ width: `${((index + 1) / 6) * 100}%` }} />
+            <i style={{ width: `${((index + 1) / QUESTIONS_PER_ROUND) * 100}%` }} />
           </div>
         </div>
         <div className="score-badge">
@@ -46,6 +50,7 @@ export function GameScreen({
           <>
             <p className="question-kicker">Which picture matches?</p>
             <h1>{routine.phrase}</h1>
+            <p className="vocabulary-translation" lang="th">{routine.translation}</p>
           </>
         ) : round === 2 ? (
           <div className="clock-prompt">

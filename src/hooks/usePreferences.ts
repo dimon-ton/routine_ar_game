@@ -10,15 +10,23 @@ const defaults: Preferences = {
   sensitivity: 1.15,
   dwellDuration: 900,
 };
+const soundDefaultMigrationKey = 'daily-routine-sound-default-v2';
 
 export function usePreferences() {
   const [preferences, setPreferences] = useState<Preferences>(() => {
     try {
+      const stored = JSON.parse(
+        localStorage.getItem('daily-routine-preferences') ?? '{}',
+      ) as Partial<Preferences>;
+      const needsSoundDefaultMigration =
+        localStorage.getItem(soundDefaultMigrationKey) !== 'complete';
+      if (needsSoundDefaultMigration) {
+        localStorage.setItem(soundDefaultMigrationKey, 'complete');
+      }
       return {
         ...defaults,
-        ...(JSON.parse(
-          localStorage.getItem('daily-routine-preferences') ?? '{}',
-        ) as Partial<Preferences>),
+        ...stored,
+        sound: needsSoundDefaultMigration ? true : (stored.sound ?? defaults.sound),
       };
     } catch {
       return defaults;

@@ -47,8 +47,10 @@ export function useFeedback(sound: boolean, speech: boolean) {
       if (!sound) return;
       const audio = audioRef.current?.[correct ? 'correct' : 'wrong'];
       if (!audio) return;
-      audio.pause();
-      audio.currentTime = 0;
+      for (const feedbackAudio of Object.values(audioRef.current ?? {})) {
+        feedbackAudio.pause();
+        feedbackAudio.currentTime = 0;
+      }
       audio.volume = correct ? 0.72 : 0.62;
       void audio.play().catch(() => undefined);
     },

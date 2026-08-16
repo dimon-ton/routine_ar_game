@@ -25,7 +25,7 @@ describe('usePreferences', () => {
 
   it('defaults and persists the background volume independently', async () => {
     const hook = renderHook(() => usePreferences());
-    expect(hook.result.current[0].backgroundVolume).toBe(0.08);
+    expect(hook.result.current[0].backgroundVolume).toBe(0.04);
 
     act(() => hook.result.current[1]((current) => ({ ...current, backgroundVolume: 0.14 })));
     await waitFor(() =>
@@ -33,5 +33,23 @@ describe('usePreferences', () => {
         JSON.parse(localStorage.getItem('daily-routine-preferences') ?? '{}').backgroundVolume,
       ).toBe(0.14),
     );
+  });
+
+  it('reduces the previous default background volume without replacing a custom level', () => {
+    localStorage.setItem(
+      'daily-routine-preferences',
+      JSON.stringify({ backgroundVolume: 0.08 }),
+    );
+    const previousDefault = renderHook(() => usePreferences());
+    expect(previousDefault.result.current[0].backgroundVolume).toBe(0.04);
+    previousDefault.unmount();
+
+    localStorage.clear();
+    localStorage.setItem(
+      'daily-routine-preferences',
+      JSON.stringify({ backgroundVolume: 0.14 }),
+    );
+    const customLevel = renderHook(() => usePreferences());
+    expect(customLevel.result.current[0].backgroundVolume).toBe(0.14);
   });
 });

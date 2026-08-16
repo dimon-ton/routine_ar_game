@@ -122,7 +122,7 @@ test('starts audible looping ambience when the first question begins', async ({ 
       expect.objectContaining({
         src: expect.stringContaining('children-focus-background.mp3'),
         loop: true,
-        volume: 0.08,
+        volume: 0.04,
       }),
     );
 });
@@ -215,7 +215,7 @@ test('lets the teacher set and persist the background volume', async ({ page }) 
   await startMouse(page);
   await page.getByRole('button', { name: 'Open teacher settings' }).click();
   const volume = page.getByRole('slider', { name: /Background volume/ });
-  await expect(volume).toHaveValue('0.08');
+  await expect(volume).toHaveValue('0.04');
   await volume.fill('0.14');
   await expect(page.getByText('14%', { exact: true })).toBeVisible();
   await expect

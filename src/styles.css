@@ -491,6 +491,9 @@ h2 {
   padding: 10px 22px;
   text-align: left;
 }
+.choices-3 .choice-card:hover:not(.correct):not(.wrong) {
+  border-color: transparent;
+}
 .choices-3 .choice-content {
   display: flex;
   align-items: center;

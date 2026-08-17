@@ -303,6 +303,11 @@ test('advances through rounds, displays results, and restarts', async ({ page })
   await finishRound(page, 2);
   await expect(page.getByRole('heading', { name: 'Choose the Correct Sentence' })).toBeVisible();
   await page.getByRole('button', { name: /Continue/ }).click();
+  const roundThreeChoice = page.locator('.choices-3 .choice-card').first();
+  await roundThreeChoice.hover();
+  await expect
+    .poll(() => roundThreeChoice.evaluate((choice) => getComputedStyle(choice).borderTopColor))
+    .toBe('rgba(0, 0, 0, 0)');
   await finishRound(page, 3);
   await expect(page.getByRole('heading', { name: 'Great Job!' })).toBeVisible();
   await expect(page.getByText('24', { exact: true })).toBeVisible();

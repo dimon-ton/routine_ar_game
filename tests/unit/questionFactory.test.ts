@@ -59,4 +59,10 @@ describe('questionFactory', () => {
       expect(choices.every((choice) => /^[a-z]+ o'clock$/.test(choice.label))).toBe(true);
     }
   });
+  it("uses only whole-hour o'clock sentences in Round 3", () => {
+    for (const routine of ROUTINES) {
+      const choices = makeChoices(routine, 3, () => 0.5);
+      expect(choices.every((choice) => / at [a-z]+ o'clock\.$/.test(choice.label))).toBe(true);
+    }
+  });
 });

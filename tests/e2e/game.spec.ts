@@ -55,6 +55,7 @@ test('starts without requesting a camera and completes a correct Round 1 answer'
 }) => {
   await startMouse(page);
   await expect(page.getByText('Round 1')).toBeVisible();
+  await expect(page.locator('.question-area [lang="th"]')).toHaveCount(0);
   await answerCorrect(page, 1);
   await expect(page.getByText(/Correct! \+1 point/)).toBeVisible();
   await expect(page.getByText('Question 2/8')).toBeVisible();

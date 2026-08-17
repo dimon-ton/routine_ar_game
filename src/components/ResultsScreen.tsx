@@ -33,7 +33,6 @@ export function ResultsScreen({
                     {item.phrase} · {item.digitalTime}
                   </strong>
                   <p>{item.answer}</p>
-                  <p lang="th">{item.translation}</p>
                 </div>
               </article>
             ))}

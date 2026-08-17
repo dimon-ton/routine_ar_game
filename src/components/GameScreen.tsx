@@ -50,7 +50,6 @@ export function GameScreen({
           <>
             <p className="question-kicker">Which picture matches?</p>
             <h1>{routine.phrase}</h1>
-            <p className="vocabulary-translation" lang="th">{routine.translation}</p>
           </>
         ) : round === 2 ? (
           <div className="clock-prompt">

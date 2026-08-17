@@ -12,8 +12,8 @@ const answers: Record<string, string> = {
 };
 const sentences: Record<string, string> = {
   'What time do you wake up?': "I wake up at six o'clock.",
-  'What time do you brush your teeth?': 'I brush my teeth at six fifteen.',
-  'What time do you take a shower?': 'I take a shower at six thirty.',
+  'What time do you brush your teeth?': "I brush my teeth at six o'clock.",
+  'What time do you take a shower?': "I take a shower at seven o'clock.",
   'What time do you have breakfast?': "I have breakfast at seven o'clock.",
   'What time do you go to school?': "I go to school at eight o'clock.",
   'What time do you do homework?': "I do homework at four o'clock.",

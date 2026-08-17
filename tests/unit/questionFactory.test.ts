@@ -53,10 +53,10 @@ describe('questionFactory', () => {
   it('maps spoken times into model sentences', () => {
     expect(spokenSentence(ROUTINES[0], "nine o'clock")).toBe("I wake up at nine o'clock.");
   });
-  it('uses lowercase spoken times for every Round 2 time choice', () => {
+  it("uses only whole-hour o'clock choices in Round 2", () => {
     for (const routine of ROUTINES) {
       const choices = makeChoices(routine, 2, () => 0.5);
-      expect(choices.every((choice) => /^[a-z]+(?: [a-z']+)?$/.test(choice.label))).toBe(true);
+      expect(choices.every((choice) => /^[a-z]+ o'clock$/.test(choice.label))).toBe(true);
     }
   });
 });
